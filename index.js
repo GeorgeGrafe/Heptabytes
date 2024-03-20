@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
-import { getDatabase, limitToLast, onValue, query, ref as dbref } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-import { getBlob, getStorage, ref as stref, uploadBytes } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+import { getDatabase, limitToLast, onValue, query, ref as dbref } from "firebase/database";
+import { getBlob, getStorage, ref as stref, uploadBytes } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
