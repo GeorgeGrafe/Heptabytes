@@ -12,6 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "firebase": "^10.9.0",
-    "parcel-bundler": "^2.0.0"
+    "parcel": "^2.0.0"
   }
 }
