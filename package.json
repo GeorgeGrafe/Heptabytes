@@ -6,11 +6,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx parcel build index.html"
   },
   "keywords": [],
   "author": "Heptaybytes",
   "license": "ISC",
   "dependencies": {
-    "firebase": "^10.9.0"
+    "firebase": "^10.9.0",
+    "parcel-bundler": "^1.6.1"
   }
 }
