@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Dashboard - Tuklas</title>
+    <meta property="og:title" content="Dashboard - Tuklas" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta property="twitter:card" content="summary_large_image" />
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Inter;
+        font-size: 16px;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-gray-black);
+        background-color: var(--dl-color-gray-white);
+
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/animate.css@4.1.1/animate.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
+    />
+
+    <script type="module" src="dashboard.js"></script>
+  </head>
+  <body>
+    <link rel="stylesheet" href="./style.css" />
+    <div>
+      <link href="./dashboard.css" rel="stylesheet" />
+
+      <div class="dashboard-container">
+        <header data-role="Header" class="dashboard-header">
+          <img
+            alt="logo"
+            src="public/resources/images/tuklas-1500h.png"
+            class="dashboard-image"
+          />
+        </header>
+        <div class="dashboard-hero">
+          <div class="dashboard-data">
+            <div class="dashboard-table">
+              <table class="dashboard-data-table" id="dataTable">
+                <thead>
+                  <tr>
+                    <th>Date Captured</th>
+                    <th>Soil Texture</th>
+                    <th>Prediction Accuracy</th>
+                    <th>Assigned Soil pH</th>
+                    <th>Assigned Env Temperature</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="dashboard-soil-image-and-crops">
+              <img
+                alt="image"
+                src="public/resources/images/default-img.svg"
+                class="dashboard-soil-image"
+                id="captured-soil-image"
+              />
+              <span class="dashboard-image-label">Captured Soil Image</span>
+              <div class="dashboard-suggestion">
+                <span class="dashboard-suggestion-header">Suggested Crops</span>
+                <ul class="dashboard-suggestion-list list">
+                  <li class="list-item" id="suggestedCrop1">
+                    <span>
+                      <span></span>
+                      <br />
+                    </span>
+                  </li>
+                  <li class="list-item" id="suggestedCrop2"><span></span></li>
+                  <li class="list-item" id="suggestedCrop3"><span></span></li>
+                  <li class="list-item" id="suggestedCrop4"><span></span></li>
+                  <li class="list-item" id="suggestedCrop5">
+                    <span>
+                      <span></span>
+                      <br />
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="dashboard-filter">
+            <span class="dashboard-filter-header">Filter By:</span>
+            <div class="dashboard-filters">
+              <div class="dashboard-filters-a">
+                <div class="dashboard-date">
+                  <span class="dashboard-text09">
+                    <span>Year</span>
+                    <br />
+                  </span>
+                  <input
+                    type="number"
+                    max="9999"
+                    min="2024"
+                    step="1"
+                    placeholder="YEAR"
+                    class="dashboard-input input"
+                    id="inputYear"
+                    onchange="ensureYearInRange()"
+                  />
+                </div>
+                <div class="dashboard-soil">
+                  <span class="dashboard-text12">
+                    <span>Soil</span>
+                    <br />
+                  </span>
+                  <select class="dashboard-select" id="inputTexture" onchange="manageFilters('texture')">
+                    <option value="A">ALL</option>
+                    <option value="C">CLAY</option>
+                    <option value="CL">CLAY LOAM</option>
+                    <option value="L">LOAM</option>
+                    <option value="LSa">LOAM SAND</option>
+                    <option value="Sa">SAND</option>
+                    <option value="SaC">SAND CLAY</option>
+                    <option value="SaCL">SAND CLAY LOAM</option>
+                    <option value="SaL">SAND LOAM</option>
+                    <option value="Si">SILT</option>
+                    <option value="SiC">SILT CLAY</option>
+                    <option value="SiCL">SILT CLAY LOAM</option>
+                    <option value="SiL">SILT LOAM</option>
+                  </select>
+                </div>
+                <div class="dashboard-accuracy">
+                  <span class="dashboard-text15">
+                    <span>Accuracy</span>
+                    <br />
+                  </span>
+                  <select class="dashboard-select1" id="inputAccuracy" onchange="manageFilters('accuracy')">
+                    <option value="A">ALL</option>
+                    <option value=">85">&gt; 85</option>
+                    <option value=">90">&gt; 90</option>
+                    <option value=">95">&gt; 95</option>
+                  </select>
+                </div>
+              </div>
+              <div class="dashboard-filters-b">
+                <div class="dashboard-p-h">
+                  <span class="dashboard-text18">
+                    <span>pH</span>
+                    <br />
+                  </span>
+                  <input
+                    type="number"
+                    max="14"
+                    min="0"
+                    step="1"
+                    placeholder="ALL"
+                    class="dashboard-input1 input"
+                    id="inputpH"
+                    onchange="manageFilters('pH')"
+                  />
+                </div>
+                <div class="dashboard-temperature">
+                  <span class="dashboard-text21">
+                    <span>Temp</span>
+                    <br />
+                  </span>
+                  <input
+                    type="number"
+                    max="60"
+                    min="-10"
+                    step="1"
+                    placeholder="ALL"
+                    class="dashboard-input2 input"
+                    id="inputTemperature"
+                    onchange="manageFilters('temperature')"
+                  />
+                </div>
+                <div class="dashboard-crops">
+                  <span class="dashboard-text24">
+                    <span>Crop</span>
+                    <br />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="ALL"
+                    autocomplete="on"
+                    class="dashboard-input3 input"
+                    id="inputCrops"
+                    onchange="manageFilters('crops')"
+                  />
+                </div>
+              </div>
+            </div>
+            <i style="font-size: small;">You can set only one filter.</i>
+            <div class="dashboard-filter-buttons">
+              <button type="button" class="dashboard-clear button" onclick="initializeFilters(true)">
+                Clear
+              </button>
+              <button type="button" class="dashboard-apply button">
+                Apply
+              </button>
+            </div>
+          </div>
+        </div>
+        <footer class="dashboard-footer">
+          <img
+            alt="logo"
+            src="public/resources/images/heptabytes-1500h.png"
+            class="dashboard-image2"
+          />
+        </footer>
+      </div>
+    </div>
+    <script
+      defer=""
+      src="https://unpkg.com/@teleporthq/teleport-custom-scripts"
+    ></script>
+  </body>
+</html>
