@@ -1,9 +1,9 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { child, endAt, equalTo, get,
   getDatabase, limitToLast, onValue, orderByChild,
-  orderByKey, query, ref as dbref, startAt } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-import { getBlob, getStorage, ref as stref } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+  orderByKey, query, ref as dbref, startAt } from "firebase/database";
+import { getBlob, getStorage, ref as stref } from "firebase/storage";
 
 // Initialize Firebase
 const firebaseConfig = {
