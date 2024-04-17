@@ -4,7 +4,7 @@
   "private": true,
   "description": "",
   "scripts": {
-    "build": "npx parcel build index.html",
+    "build": "npx parcel build index.html --no-scope-hoist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
