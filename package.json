@@ -11,7 +11,10 @@
   "author": "Heptaybytes",
   "license": "ISC",
   "dependencies": {
-    "firebase": "10.8.1",
+    "firebase": "^10.9.0",
     "parcel": "^2.0.0"
-  }
+  },
+  "alias": {
+    "process": false
+   }
 }
