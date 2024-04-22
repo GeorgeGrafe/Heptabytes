@@ -40,8 +40,9 @@ window.manageFilters = function(filterToKeep) {
 manageFilters(null);
 
 let index = 0;
-const capturedArray = [];
 const cropsArray = [];
+
+let imagesMap = new Map()
 
 //prompt("What?");
 
@@ -97,7 +98,7 @@ function updateTable(data) {
     
     getBlob(stref(storage, path))
         .then((blob) => {
-        capturedArray.push(blob);
+        imagesMap.set(IDNumber, blob);
         })
         .catch((error) => {
         console.error("Error getting image Blob:", error)
@@ -109,8 +110,8 @@ function updateTable(data) {
 }
 
 function updateDetails(ID) {
-    if (capturedArray.length > 0 && capturedArray[ID] instanceof Blob) {
-        const imageUrl = URL.createObjectURL(capturedArray[ID]);
+    if (imagesMap.size > 0 && imagesMap.get(ID) instanceof Blob) {
+        const imageUrl = URL.createObjectURL(imagesMap.get(ID));
         const imageElement = document.getElementById('captured-soil-image');
         imageElement.src = imageUrl;
         imageElement.onload = () => {
@@ -126,13 +127,29 @@ function updateDetails(ID) {
     const crop4 = document.getElementById('suggestedCrop4');
     const crop5 = document.getElementById('suggestedCrop5');
     
-    const crops = cropsArray[ID];
-    const [fir, sec, thi, fou, fif] = Object.keys(crops);
-    crop1.textContent = fir;
-    crop2.textContent = sec;
-    crop3.textContent = thi;
-    crop4.textContent = fou;
-    crop5.textContent = fif;
+    const crops = Object.entries(cropsArray[ID]);
+
+    const sortedEntries = crops.sort((a, b) => {
+        const priorities = {
+            'Ideal': 3,
+            'Very Suitable': 2,
+            'Suitable': 1
+        };
+
+        const aPriority = priorities[a[1]] || 0;
+        const bPriority = priorities[b[1]] || 0;
+
+        return bPriority - aPriority;
+    });
+
+    const sortedCrops = Object.fromEntries(sortedEntries);
+
+    const [fir, sec, thi, fou, fif] = Object.keys(sortedCrops);
+    crop1.textContent = fir != null ? `${fir} - ${sortedCrops[fir]}` : "";
+    crop2.textContent = sec != null ? `${sec} - ${sortedCrops[sec]}` : "";
+    crop3.textContent = thi != null ? `${thi} - ${sortedCrops[thi]}` : "";
+    crop4.textContent = fou != null ? `${fou} - ${sortedCrops[fou]}` : "";
+    crop5.textContent = fif != null ? `${fif} - ${sortedCrops[fif]}` : "";
 
     applyFilters();
 }
