@@ -7,7 +7,7 @@ import { database, storage,
 window.ensureYearInRange = function() {
     const inputYear = document.getElementById("inputYear");
     let year = Number(inputYear.value);
-    year = year < new Date().getFullYear() || year > 9999 ? new Date().getFullYear() : year;
+    year = year < 2024 || year > 9999 ? 2024 : year;
     inputYear.value = year; 
 }
 
@@ -24,18 +24,18 @@ window.manageFilters = function(filterToKeep) {
         const inputAccuracy = document.getElementById("inputAccuracy");
         inputAccuracy.value = "A";
     }
-    if (filterToKeep == null || filterToKeep != "pH") {
-        const inputpH = document.getElementById("inputpH");
-        inputpH.value = "";
-    }
-    if (filterToKeep == null || filterToKeep != "temperature") {
-        const inputTemperature = document.getElementById("inputTemperature");
-        inputTemperature.value = "";
-    }
-    if (filterToKeep == null || filterToKeep != "crops") {
-        const inputCrops = document.getElementById("inputCrops");
-        inputCrops.value = "";
-    }
+    // if (filterToKeep == null || filterToKeep != "pH") {
+    //     const inputpH = document.getElementById("inputpH");
+    //     inputpH.value = "";
+    // }
+    // if (filterToKeep == null || filterToKeep != "temperature") {
+    //     const inputTemperature = document.getElementById("inputTemperature");
+    //     inputTemperature.value = "";
+    // }
+    // if (filterToKeep == null || filterToKeep != "crops") {
+    //     const inputCrops = document.getElementById("inputCrops");
+    //     inputCrops.value = "";
+    // }
 }
 manageFilters(null);
 
@@ -43,8 +43,6 @@ let index = 0;
 const cropsArray = [];
 
 let imagesMap = new Map()
-
-//prompt("What?");
 
 const dataObtained = query(dbref(database, `all/${inputYear.value}`), orderByKey(), limitToLast(20));
 
@@ -66,6 +64,7 @@ function snapshotToReversedObject(snapshot) {
 function updateTable(data) {
     const table = document.getElementById("dataTable");
     const row = document.createElement('tr');
+
     const dateCaptured = row.insertCell(0);
     const texture = row.insertCell(1);
     const accuracy = row.insertCell(2);
@@ -75,11 +74,11 @@ function updateTable(data) {
     const code = data[0];
     const codeSplit = String(code).split('-');
     const date = `${codeSplit[0]}-${codeSplit[1]}-${codeSplit[2]}`
-
     dateCaptured.innerHTML = date;
+
     texture.innerHTML = data[1].texture;
     accuracy.innerHTML = data[1].accuracy;
-    pH.innerHTML = Number(data[1].pH).toFixed(1);
+    pH.innerHTML = data[1].pH != '-' ? Number(data[1].pH).toFixed(1) : '-';
     temperature.innerHTML = data[1].temperature;
 
     let name = data[0];
@@ -156,16 +155,22 @@ function updateDetails(ID) {
 
 function applyFilters() {
     const allRef = dbref(database, "all/2024");
-    const sandQuery = query(allRef, orderByChild('Texture'), equalTo('Sand'), startAt(5), endAt(5.9));
+    const sandQuery = query(allRef, orderByChild('texture'), equalTo('Sand'));
+    const otherQuery = query(allRef, orderByChild('pH'), startAt(40));
 
     // Execute the query and retrieve the data
-    get(sandQuery)
+    get(otherQuery)
         .then((snapshot) => {
         const filteredData = [];
         snapshot.forEach((childSnapshot) => {
             filteredData.push(childSnapshot.val());
         });
-        console.log(filteredData);
+        // snapshot = snapshotToReversedObject(snapshot);
+        // Object.entries(snapshot).forEach(element => {
+        // if (element[0] != null)
+        //     updateTable(element);
+        // });
+        console.log('Sheeesh');
         })
         .catch((error) => {
         console.error(error);
