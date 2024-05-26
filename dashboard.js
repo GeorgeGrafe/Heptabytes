@@ -3,11 +3,16 @@ import { database, storage,
     getBlob, stref // From Firebase Storage
 } from "./index.js"
 
+const currentYear = new Date().getFullYear();
+
 // Clamping the value of year input field
 window.ensureYearInRange = function() {
     const inputYear = document.getElementById("inputYear");
     let year = Number(inputYear.value);
-    year = year < 2024 || year > 9999 ? 2024 : year;
+    if (year < 2024)
+        year = 2024;
+    else if (year > currentYear)
+        year = currentYear;
     inputYear.value = year; 
 }
 
@@ -15,47 +20,40 @@ window.ensureYearInRange = function() {
 window.manageFilters = function(filterToKeep) {
     if (filterToKeep == null) {
         inputYear.value = new Date().getFullYear();
+        applyFilters(null);
     }
+    else
+        applyFilters(filterToKeep);
+
     if (filterToKeep == null || filterToKeep != "texture") {
         const inputTexture = document.getElementById("inputTexture");
-        inputTexture.value = "A";
+        inputTexture.value = "All";
     }
     if (filterToKeep == null || filterToKeep != "accuracy") {
         const inputAccuracy = document.getElementById("inputAccuracy");
-        inputAccuracy.value = "A";
+        inputAccuracy.value = "All";
     }
-    // if (filterToKeep == null || filterToKeep != "pH") {
-    //     const inputpH = document.getElementById("inputpH");
-    //     inputpH.value = "";
-    // }
-    // if (filterToKeep == null || filterToKeep != "temperature") {
-    //     const inputTemperature = document.getElementById("inputTemperature");
-    //     inputTemperature.value = "";
-    // }
-    // if (filterToKeep == null || filterToKeep != "crops") {
-    //     const inputCrops = document.getElementById("inputCrops");
-    //     inputCrops.value = "";
-    // }
+    if (filterToKeep == null || filterToKeep != "pH") {
+        const inputpH = document.getElementById("inputpH");
+        inputpH.value = "";
+    }
+    if (filterToKeep == null || filterToKeep != "temperature") {
+        const inputTemperature = document.getElementById("inputTemperature");
+        inputTemperature.value = "";
+    }
+    if (filterToKeep == null || filterToKeep != "crops") {
+        const inputCrops = document.getElementById("inputCrops");
+        inputCrops.value = "";
+    }
 }
 manageFilters(null);
 
+let imagesMap = new Map()
 let index = 0;
 const cropsArray = [];
 
-let imagesMap = new Map()
-
-const dataObtained = query(dbref(database, `all/${inputYear.value}`), orderByKey(), limitToLast(20));
-
-onValue(dataObtained, (snapshot) => {
-    snapshot = snapshotToReversedObject(snapshot);
-    Object.entries(snapshot).forEach(element => {
-        if (element[0] != null)
-            updateTable(element);
-    });
-});
-
-function snapshotToReversedObject(snapshot) {
-    let entries = Object.entries(snapshot.val() || {});
+function reversedObjectElements(object) {
+    let entries = Object.entries(object);
     let reversedEntries = entries.reverse();
     let reversedObject = Object.fromEntries(reversedEntries);
     return reversedObject;
@@ -125,6 +123,11 @@ function updateDetails(ID) {
     const crop3 = document.getElementById('suggestedCrop3');
     const crop4 = document.getElementById('suggestedCrop4');
     const crop5 = document.getElementById('suggestedCrop5');
+    const crop6 = document.getElementById('suggestedCrop6');
+    const crop7 = document.getElementById('suggestedCrop7');
+    const crop8 = document.getElementById('suggestedCrop8');
+    const crop9 = document.getElementById('suggestedCrop9');
+    const crop10 = document.getElementById('suggestedCrop10');
     
     const crops = Object.entries(cropsArray[ID]);
 
@@ -143,33 +146,71 @@ function updateDetails(ID) {
 
     const sortedCrops = Object.fromEntries(sortedEntries);
 
-    const [fir, sec, thi, fou, fif] = Object.keys(sortedCrops);
+    const [fir, sec, thi, fou, fif, six, sev, eig, nin, ten] = Object.keys(sortedCrops);
     crop1.textContent = fir != null ? `${fir} - ${sortedCrops[fir]}` : "";
     crop2.textContent = sec != null ? `${sec} - ${sortedCrops[sec]}` : "";
     crop3.textContent = thi != null ? `${thi} - ${sortedCrops[thi]}` : "";
     crop4.textContent = fou != null ? `${fou} - ${sortedCrops[fou]}` : "";
     crop5.textContent = fif != null ? `${fif} - ${sortedCrops[fif]}` : "";
-
-    applyFilters();
+    crop6.textContent = six != null ? `${six} - ${sortedCrops[six]}` : "";
+    crop7.textContent = sev != null ? `${sev} - ${sortedCrops[sev]}` : "";
+    crop8.textContent = eig != null ? `${eig} - ${sortedCrops[eig]}` : "";
+    crop9.textContent = nin != null ? `${nin} - ${sortedCrops[nin]}` : "";
+    crop10.textContent = ten != null ? `${ten} - ${sortedCrops[ten]}` : "";
 }
 
-function applyFilters() {
+function applyFilters(filter) {
+
     const allRef = dbref(database, "all/2024");
-    const sandQuery = query(allRef, orderByChild('texture'), equalTo('Sand'));
-    const otherQuery = query(allRef, orderByChild('pH'), startAt(40));
+    let dataQuery;
+
+    // Checking filters
+    const texture = inputTexture.value.toLowerCase().split(' ').map(word => word.replace(word[0], word[0].toUpperCase())).join(' ');
+    const accuracy = inputAccuracy.value;
+    const pH = inputpH.value;
+    const temperature = inputTemperature.value;
+    switch (filter) {
+        case "texture": dataQuery = texture == "All"
+            ? query(allRef, orderByKey(), limitToLast(15))
+            : query(allRef, orderByChild("texture"), equalTo(texture), limitToLast(15));
+            break;
+        case "accuracy": dataQuery = accuracy == "All"
+            ? query(allRef, orderByKey(), limitToLast(15))
+            : query(allRef, orderByChild("accuracy"), startAt(parseInt(accuracy)), limitToLast(15));
+            break;
+        case "pH": dataQuery = pH == "" || pH == null
+            ? query(allRef, orderByKey(), limitToLast(15))
+            : query(allRef, orderByChild("pH"), startAt(parseInt(pH)), endAt(parseInt(pH) + 0.9), limitToLast(15));
+            break;
+        case "temperature": dataQuery = temperature == "" || temperature == null
+            ? query(allRef, orderByKey(), limitToLast(15))
+            : query(allRef, orderByChild("temperature"), startAt(parseInt(temperature)), endAt(parseInt(temperature) + 9), limitToLast(15));
+            break;
+        default:
+            dataQuery = query(allRef, orderByKey(), limitToLast(15));
+            break;
+    }
 
     // Execute the query and retrieve the data
-    get(otherQuery)
+    get(dataQuery)
         .then((snapshot) => {
-        const filteredData = [];
+        let filteredData = {};
         snapshot.forEach((childSnapshot) => {
-            filteredData.push(childSnapshot.val());
+            filteredData[childSnapshot.key] = childSnapshot.val();
         });
-        // snapshot = snapshotToReversedObject(snapshot);
-        // Object.entries(snapshot).forEach(element => {
-        // if (element[0] != null)
-        //     updateTable(element);
-        // });
+        
+        filteredData = reversedObjectElements(filteredData);
+
+        var table = document.getElementById("dataTable");
+        // Remove all rows except the first one
+        while (table.rows.length > 1) {
+            table.removeChild(table.rows[1]);
+        }
+
+        Object.entries(filteredData).forEach(element => {
+            if (element[0] != null)
+                updateTable(element);
+            });
         console.log('Sheeesh');
         })
         .catch((error) => {
