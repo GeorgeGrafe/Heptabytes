@@ -92,7 +92,12 @@
                   <li class="list-item" id="suggestedCrop2"><span></span></li>
                   <li class="list-item" id="suggestedCrop3"><span></span></li>
                   <li class="list-item" id="suggestedCrop4"><span></span></li>
-                  <li class="list-item" id="suggestedCrop5">
+                  <li class="list-item" id="suggestedCrop5"><span></span></li>
+                  <li class="list-item" id="suggestedCrop6"><span></span></li>
+                  <li class="list-item" id="suggestedCrop7"><span></span></li>
+                  <li class="list-item" id="suggestedCrop8"><span></span></li>
+                  <li class="list-item" id="suggestedCrop9"><span></span></li>
+                  <li class="list-item" id="suggestedCrop10">
                     <span>
                       <span></span>
                       <br />
@@ -104,6 +109,8 @@
           </div>
           <div class="dashboard-filter">
             <span class="dashboard-filter-header">Filter By:</span>
+            <br />
+            <i style="font-size: small;">You can set only one filter.</i>
             <div class="dashboard-filters">
               <div class="dashboard-filters-a">
                 <div class="dashboard-date">
@@ -128,19 +135,19 @@
                     <br />
                   </span>
                   <select class="dashboard-select" id="inputTexture" onchange="manageFilters('texture')">
-                    <option value="A">ALL</option>
-                    <option value="C">CLAY</option>
-                    <option value="CL">CLAY LOAM</option>
-                    <option value="L">LOAM</option>
-                    <option value="LSa">LOAM SAND</option>
-                    <option value="Sa">SAND</option>
-                    <option value="SaC">SAND CLAY</option>
-                    <option value="SaCL">SAND CLAY LOAM</option>
-                    <option value="SaL">SAND LOAM</option>
-                    <option value="Si">SILT</option>
-                    <option value="SiC">SILT CLAY</option>
-                    <option value="SiCL">SILT CLAY LOAM</option>
-                    <option value="SiL">SILT LOAM</option>
+                    <option value="All">ALL</option>
+                    <option value="Clay">CLAY</option>
+                    <option value="Clay Loam">CLAY LOAM</option>
+                    <option value="Loam">LOAM</option>
+                    <option value="Loam Sand">LOAM SAND</option>
+                    <option value="Sand">SAND</option>
+                    <option value="Sand Clay">SAND CLAY</option>
+                    <option value="Sand Clay Loam">SAND CLAY LOAM</option>
+                    <option value="Sand Loam">SAND LOAM</option>
+                    <option value="Silt">SILT</option>
+                    <option value="Silt Clay">SILT CLAY</option>
+                    <option value="Silt Clay Loam">SILT CLAY LOAM</option>
+                    <option value="Silt Loam">SILT LOAM</option>
                   </select>
                 </div>
                 <div class="dashboard-accuracy">
@@ -149,16 +156,15 @@
                     <br />
                   </span>
                   <select class="dashboard-select1" id="inputAccuracy" onchange="manageFilters('accuracy')">
-                    <option value="A">ALL</option>
-                    <option value=">75">&gt; 85</option>
-                    <option value=">80">&gt; 90</option>
-                    <option value=">85">&gt; 95</option>
-                    <option value=">90">&gt; 95</option>
-                    <option value=">95">&gt; 95</option>
+                    <option value="All">ALL</option>
+                    <option value="60">&gt; 60</option>
+                    <option value="70">&gt; 70</option>
+                    <option value="80">&gt; 80</option>
+                    <option value="90">&gt; 90</option>
+                    <option value="95">&gt; 95</option>
                   </select>
                 </div>
               </div>
-              <!--
               <div class="dashboard-filters-b">
                 <div class="dashboard-p-h">
                   <span class="dashboard-text18">
@@ -185,7 +191,7 @@
                     type="number"
                     max="60"
                     min="-10"
-                    step="1"
+                    step="10"
                     placeholder="ALL"
                     class="dashboard-input2 input"
                     id="inputTemperature"
@@ -207,15 +213,10 @@
                   />
                 </div>
               </div>
-              -->
             </div>
-            <i style="font-size: small;">You can set only one filter.</i>
             <div class="dashboard-filter-buttons">
-              <button type="button" class="dashboard-clear button" onclick="initializeFilters(true)">
-                Clear
-              </button>
-              <button type="button" class="dashboard-apply button">
-                Apply
+              <button type="button" class="dashboard-reset button" onclick="manageFilters(null)">
+                Reset
               </button>
             </div>
           </div>
