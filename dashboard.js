@@ -161,7 +161,7 @@ function updateDetails(ID) {
 
 function applyFilters(filter) {
 
-    const allRef = dbref(database, "all");
+    const allRef = dbref(database, "all/${year}");
     let dataQuery;
 
     // Checking filters
