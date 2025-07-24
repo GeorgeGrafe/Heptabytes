@@ -15,7 +15,8 @@ window.ensureYearInRange = function() {
         year = 2024;
     else if (year > currentYear)
         year = currentYear;
-    inputYear.value = year; 
+    inputYear.value = year;
+    applyFilters(null);
 }
 
 // Initialize, manage, or reset filters
