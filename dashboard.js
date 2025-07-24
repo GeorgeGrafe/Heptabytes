@@ -5,7 +5,7 @@ import { database, storage,
 
 const currentYear = new Date().getFullYear();
 
-let year = 0;
+let year = currentYear;
 
 // Clamping the value of year input field
 window.ensureYearInRange = function() {
@@ -164,7 +164,6 @@ function updateDetails(ID) {
 function applyFilters(filter) {
 
     const allRef = dbref(database, `all/${year}`);
-    console.log(year);
     let dataQuery;
 
     // Checking filters
