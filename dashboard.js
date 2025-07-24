@@ -92,7 +92,7 @@ function updateTable(data) {
         updateDetails(IDNumber);
     });
 
-    let link = `2024/${name}.jpg`;
+    let link = `${year}/${name}.jpg`;
     const path = link;
     
     getBlob(stref(storage, path))
@@ -164,6 +164,7 @@ function updateDetails(ID) {
 function applyFilters(filter) {
 
     const allRef = dbref(database, `all/${year}`);
+    console.log(year);
     let dataQuery;
 
     // Checking filters
