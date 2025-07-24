@@ -5,10 +5,12 @@ import { database, storage,
 
 const currentYear = new Date().getFullYear();
 
+let year = 0;
+
 // Clamping the value of year input field
 window.ensureYearInRange = function() {
     const inputYear = document.getElementById("inputYear");
-    let year = Number(inputYear.value);
+    year = Number(inputYear.value);
     if (year < 2024)
         year = 2024;
     else if (year > currentYear)
